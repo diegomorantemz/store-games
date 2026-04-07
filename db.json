@@ -1,0 +1,62 @@
+{
+  "games": [
+    {
+      "id": 1,
+      "name": "The Legend of Zelda: Tears of the Kingdom",
+      "price": 59.99,
+      "discount": 10,
+      "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5c1a.jpg",
+      "category": "Aventura",
+      "description": "Explora las vastas tierras de Hyrule en esta épica aventura.",
+      "trailerUrl": "https://www.youtube.com/embed/uHGShqcAHlQ",
+      "stock": 100
+    },
+    {
+      "id": 2,
+      "name": "EA Sports FC 25",
+      "price": 69.99,
+      "discount": 0,
+      "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7rqb.jpg",
+      "category": "Deportes",
+      "description": "La experiencia de fútbol más realista.",
+      "trailerUrl": "https://www.youtube.com/embed/pBM2wjQ2wXs",
+      "stock": 50
+    },
+    {
+      "id": 3,
+      "name": "Cyberpunk 2077",
+      "price": 39.99,
+      "discount": 25,
+      "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1wv2.jpg",
+      "category": "RPG",
+      "description": "Sumérgete en Night City, una megalópolis obsesionada con el poder.",
+      "trailerUrl": "https://www.youtube.com/embed/qIcTM8WXFjk",
+      "stock": 200
+    },
+    {
+      "id": 4,
+      "name": "Hogwarts Legacy",
+      "price": 49.99,
+      "discount": 20,
+      "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4jni.jpg",
+      "category": "Aventura",
+      "description": "Experimenta el mundo mágico de Harry Potter.",
+      "trailerUrl": "https://www.youtube.com/embed/1O6Qstncpnc",
+      "stock": 150
+    },
+    {
+      "id": 5,
+      "name": "Call of Duty: Modern Warfare III",
+      "price": 69.99,
+      "discount": 15,
+      "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7x8a.jpg",
+      "category": "Acción",
+      "description": "La franquicia más icónica de disparos regresa.",
+      "trailerUrl": "https://www.youtube.com/embed/qv2U5EXUeRA",
+      "stock": 80
+    }
+  ],
+  "users": [],
+  "cart": [],
+  "favorites": []
+}
