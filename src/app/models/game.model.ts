@@ -1,0 +1,25 @@
+export interface Game {
+  id: number;
+  name: string;
+  price: number;
+  discount: number;
+  imageUrl: string;
+  category: string;
+  description: string;
+  trailerUrl: string;
+  stock: number;
+  releaseDate?: string;
+}
+
+// Función para calcular precio con descuento
+export function getDiscountedPrice(game: Game): number {
+  if (game.discount > 0) {
+    return game.price * (1 - game.discount / 100);
+  }
+  return game.price;
+}
+
+// Función para formatear precio
+export function formatPrice(price: number): string {
+  return `$${price.toFixed(2)}`;
+}
