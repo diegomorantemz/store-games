@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameService } from '../../services/game.service';
+import { CartService } from '../../services/cart.service';
 import { Game, getDiscountedPrice, formatPrice } from '../../models/game.model';
 
 @Component({
@@ -15,7 +16,8 @@ export class GameListComponent implements OnInit{
   loading = true;
   error = '';
 
-  constructor(private gameService: GameService) {}
+  constructor(private gameService: GameService, private cartService: CartService
+  ) {}
 
   ngOnInit(): void {
     this.loadGames();
@@ -43,8 +45,18 @@ export class GameListComponent implements OnInit{
     return formatPrice(price);
   }
 
-  addToCart(game: Game): void {
-    alert(`🛒 ${game.name} añadido al carrito`);
+  addToCart(game: Game, button: HTMLButtonElement): void {
+    this.cartService.addToCart(game, 1);
+    
+    // Guardar texto original y deshabilitar
+    const originalText = button.innerText;
+    button.innerText = '✓ Añadido!';
+    button.disabled = true;
+    
+    setTimeout(() => {
+      button.innerText = originalText;
+      button.disabled = false;
+    }, 1500);
   }
 
   addToFavorites(game: Game): void {

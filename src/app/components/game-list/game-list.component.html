@@ -43,7 +43,8 @@
           </div>
         </div>
         <div class="card-footer bg-transparent">
-          <button class="btn btn-primary w-100 mb-2" (click)="addToCart(game)">
+          <!-- Pasar el botón como parámetro -->
+          <button class="btn btn-primary w-100 mb-2" #btn (click)="addToCart(game, btn)">
             🛒 Añadir al carrito
           </button>
           <button class="btn btn-outline-danger w-100" (click)="addToFavorites(game)">
