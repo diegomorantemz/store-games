@@ -1,0 +1,27 @@
+.card {
+  border: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.card-img-top {
+  border-radius: 8px 8px 0 0;
+}
+
+.btn {
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  transform: scale(1.02);
+}
+
+.ratio-16x9 {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.lead {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #333;
+}

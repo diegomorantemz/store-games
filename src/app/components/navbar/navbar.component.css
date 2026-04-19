@@ -1,0 +1,10 @@
+/* Estilos específicos del navbar */
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.btn-outline-light:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s;
+}

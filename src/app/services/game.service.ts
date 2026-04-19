@@ -20,4 +20,14 @@ export class GameService {
   getGameById(id: number): Observable<Game> {
     return this.http.get<Game>(`${this.apiUrl}/games/${id}`);
   }
+
+  // Buscar juegos por nombre
+  searchGames(searchTerm: string): Observable<Game[]> {
+    return this.http.get<Game[]>(`${this.apiUrl}/games?q=${searchTerm}`);
+  }
+
+  // Filtrar juegos por categoría
+  getGamesByCategory(category: string): Observable<Game[]> {
+    return this.http.get<Game[]>(`${this.apiUrl}/games?category=${category}`);
+  }
 }

@@ -1,0 +1,66 @@
+<div class="container mt-4">
+  <!-- Cargando -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p>Cargando juegos...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- Grid de juegos -->
+  <div *ngIf="!loading && !error" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div *ngFor="let game of games" class="col">
+      <div class="card h-100 position-relative">
+        <!-- Botón favorito -->
+        <button 
+          class="btn position-absolute top-0 end-0 m-2"
+          [class.btn-danger]="isFavorite(game.id)"
+          [class.btn-outline-danger]="!isFavorite(game.id)"
+          (click)="toggleFavorite(game); $event.stopPropagation()"
+          style="z-index: 10; border-radius: 50%; width: 40px; height: 40px;">
+          ❤️
+        </button>
+
+        <!-- Enlace al detalle -->
+        <a [routerLink]="['/game', game.id]" class="text-decoration-none text-dark">
+          <img 
+            [src]="game.imageUrl" 
+            class="card-img-top" 
+            [alt]="game.name"
+            style="height: 250px; object-fit: cover; cursor: pointer;"
+          >
+          <div class="card-body">
+            <span class="badge bg-secondary mb-2">{{ game.category }}</span>
+            <h5 class="card-title">{{ game.name }}</h5>
+            <p class="card-text">{{ game.description | slice:0:80 }}...</p>
+            
+            <div class="mt-3">
+              <ng-container *ngIf="game.discount > 0; else noDiscount">
+                <span class="text-decoration-line-through text-danger me-2">
+                  {{ formatPrice(game.price) }}
+                </span>
+                <span class="fw-bold text-success">
+                  {{ formatPrice(getDiscountedPrice(game)) }}
+                </span>
+                <span class="badge bg-danger ms-2">-{{ game.discount }}%</span>
+              </ng-container>
+              <ng-template #noDiscount>
+                <span class="fw-bold text-success">{{ formatPrice(game.price) }}</span>
+              </ng-template>
+            </div>
+          </div>
+        </a>
+        <div class="card-footer bg-transparent">
+          <button class="btn btn-primary w-100" #btn (click)="addToCart(game, btn)">
+            🛒 Añadir al carrito
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

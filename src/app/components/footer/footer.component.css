@@ -1,0 +1,16 @@
+footer {
+  margin-top: auto;
+}
+
+footer a:hover {
+  color: white !important;
+  text-decoration: underline !important;
+}
+
+hr {
+  opacity: 0.2;
+}
+
+.list-unstyled li {
+  margin-bottom: 0.5rem;
+}
