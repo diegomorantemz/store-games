@@ -1,19 +1,39 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Game } from '../models/game.model';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritesService {
-  private favoritesKey = 'user_favorites';
   private favoritesSubject: BehaviorSubject<Game[]>;
+  private currentUserId: number | null = null;
 
-  constructor() {
-    // Cargar favoritos desde localStorage
-    const savedFavorites = localStorage.getItem(this.favoritesKey);
-    const initialFavorites: Game[] = savedFavorites ? JSON.parse(savedFavorites) : [];
-    this.favoritesSubject = new BehaviorSubject<Game[]>(initialFavorites);
+  constructor(private userService: UserService) {
+    this.favoritesSubject = new BehaviorSubject<Game[]>([]);
+
+    this.userService.getCurrentUser().subscribe(user => {
+      this.currentUserId = user ? user.id : null;
+      this.loadFavorites();
+    });
+  }
+
+  private getStorageKey(): string {
+    return this.currentUserId ? `favorites_user_${this.currentUserId}` : 'favorites_guest';
+  }
+
+  private loadFavorites(): void {
+    const key = this.getStorageKey();
+    const savedFavorites = localStorage.getItem(key);
+    const favorites: Game[] = savedFavorites ? JSON.parse(savedFavorites) : [];
+    this.favoritesSubject.next(favorites);
+  }
+
+  private saveFavorites(favorites: Game[]): void {
+    const key = this.getStorageKey();
+    localStorage.setItem(key, JSON.stringify(favorites));
+    this.favoritesSubject.next(favorites);
   }
 
   getFavorites(): Observable<Game[]> {
@@ -57,8 +77,7 @@ export class FavoritesService {
     return this.favoritesSubject.value.some(game => game.id === gameId);
   }
 
-  private saveFavorites(favorites: Game[]): void {
-    localStorage.setItem(this.favoritesKey, JSON.stringify(favorites));
-    this.favoritesSubject.next(favorites);
+  clearFavorites(): void {
+    this.saveFavorites([]);
   }
 }

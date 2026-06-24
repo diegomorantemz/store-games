@@ -21,5 +21,5 @@ export function getDiscountedPrice(game: Game): number {
 
 // Función para formatear precio
 export function formatPrice(price: number): string {
-  return `$${price.toFixed(2)}`;
+  return `S/ ${price.toFixed(2)}`;
 }

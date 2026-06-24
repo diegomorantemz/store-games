@@ -11,23 +11,23 @@ export class GameService {
 
   constructor(private http: HttpClient) {}
 
-  // Obtener todos los juegos
   getGames(): Observable<Game[]> {
     return this.http.get<Game[]>(`${this.apiUrl}/games`);
   }
 
-  // Obtener un juego por ID
   getGameById(id: number): Observable<Game> {
     return this.http.get<Game>(`${this.apiUrl}/games/${id}`);
   }
 
-  // Buscar juegos por nombre
+  // Buscar juegos por nombre (búsqueda parcial)
   searchGames(searchTerm: string): Observable<Game[]> {
+    // JSON Server soporta búsqueda con 'q' para búsqueda parcial en todos los campos
     return this.http.get<Game[]>(`${this.apiUrl}/games?q=${searchTerm}`);
   }
 
-  // Filtrar juegos por categoría
-  getGamesByCategory(category: string): Observable<Game[]> {
-    return this.http.get<Game[]>(`${this.apiUrl}/games?category=${category}`);
+  // Buscar específicamente por nombre
+  searchGamesByName(searchTerm: string): Observable<Game[]> {
+    return this.http.get<Game[]>(`${this.apiUrl}/games?name_like=${searchTerm}`);
   }
+
 }

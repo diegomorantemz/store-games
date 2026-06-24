@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';  // ← Agregar esta importación
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { GameService } from '../../services/game.service';
 import { CartService } from '../../services/cart.service';
 import { FavoritesService } from '../../services/favorites.service';
@@ -9,15 +10,18 @@ import { Game, getDiscountedPrice, formatPrice } from '../../models/game.model';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule],  // ← Agregar RouterModule aquí
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  games: Game[] = [];
+  allGames: Game[] = [];
+  filteredGames: Game[] = [];
   loading = true;
   error = '';
   favorites: Game[] = [];
+  searchTerm: string = '';
+  searching: boolean = false;
 
   constructor(
     private gameService: GameService,
@@ -33,8 +37,13 @@ export class HomeComponent implements OnInit {
   loadGames(): void {
     this.gameService.getGames().subscribe({
       next: (data) => {
-        this.games = data;
+        this.allGames = data;
+        this.filteredGames = data;
         this.loading = false;
+        // Si hay búsqueda pendiente, aplicarla localmente
+        if (this.searchTerm) {
+          this.filterGamesLocally();
+        }
       },
       error: (err) => {
         console.error('Error:', err);
@@ -42,6 +51,31 @@ export class HomeComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  // Búsqueda LOCAL (más rápido y confiable)
+  filterGamesLocally(): void {
+    if (!this.searchTerm.trim()) {
+      this.filteredGames = this.allGames;
+      return;
+    }
+
+    const term = this.searchTerm.toLowerCase().trim();
+    this.filteredGames = this.allGames.filter(game =>
+      game.name.toLowerCase().includes(term) ||
+      game.category.toLowerCase().includes(term)
+    );
+  }
+
+  // Método llamado desde el input
+  onSearchInput(): void {
+    this.filterGamesLocally();
+  }
+
+  // Limpiar búsqueda
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.filteredGames = this.allGames;
   }
 
   loadFavorites(): void {

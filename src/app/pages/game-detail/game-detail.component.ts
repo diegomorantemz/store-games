@@ -66,9 +66,9 @@ export class GameDetailComponent implements OnInit {
   }
 
   addToCart(): void {
-    if (this.game) {
-      this.cartService.addToCart(this.game, 1);
-      alert(`🛒 ${this.game.name} añadido al carrito`);
+  if (this.game) {
+    this.cartService.addToCart(this.game, 1);
+    alert(this.game.name + ' añadido al carrito');
     }
   }
 

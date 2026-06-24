@@ -1,0 +1,155 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white text-center">
+          <h4 class="mb-0">
+            <i class="bi bi-person-plus"></i> Registro de Usuario
+          </h4>
+        </div>
+        <div class="card-body">
+          <form #registerForm="ngForm" (ngSubmit)="onSubmit()">
+            <div *ngIf="error" class="alert alert-danger">
+              <i class="bi bi-exclamation-triangle-fill"></i> {{ error }}
+            </div>
+            <div *ngIf="success" class="alert alert-success">
+              <i class="bi bi-check-circle-fill"></i> {{ success }}
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">
+                <i class="bi bi-person"></i> Nombre completo
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="userData.name"
+                name="name"
+                required
+                placeholder="Juan Pérez"
+                #nameInput="ngModel"
+                [class.is-invalid]="nameInput.invalid && nameInput.touched"
+              >
+              <div class="invalid-feedback" *ngIf="nameInput.invalid && nameInput.touched">
+                El nombre es requerido
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">
+                <i class="bi bi-phone"></i> Número de teléfono
+              </label>
+              <input
+                type="tel"
+                class="form-control"
+                [(ngModel)]="userData.phone"
+                name="phone"
+                required
+                placeholder="999123456"
+                #phoneInput="ngModel"
+                [class.is-invalid]="phoneInput.invalid && phoneInput.touched"
+              >
+              <div class="invalid-feedback" *ngIf="phoneInput.invalid && phoneInput.touched">
+                El teléfono es requerido
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">
+                <i class="bi bi-envelope"></i> Correo electrónico
+              </label>
+              <input
+                type="email"
+                class="form-control"
+                [(ngModel)]="userData.email"
+                name="email"
+                required
+                email
+                placeholder="juan@email.com"
+                #emailInput="ngModel"
+                [class.is-invalid]="emailInput.invalid && emailInput.touched"
+              >
+              <div class="invalid-feedback" *ngIf="emailInput.invalid && emailInput.touched">
+                Ingresa un correo válido
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">
+                <i class="bi bi-lock"></i> Contraseña
+              </label>
+              <div class="input-group">
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  class="form-control"
+                  [(ngModel)]="userData.password"
+                  name="password"
+                  required
+                  minlength="6"
+                  placeholder="Mínimo 6 caracteres"
+                  #passwordInput="ngModel"
+                  [class.is-invalid]="passwordInput.invalid && passwordInput.touched"
+                >
+                <button 
+                  class="btn btn-outline-secondary" 
+                  type="button"
+                  (click)="togglePasswordVisibility()"
+                  [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                >
+                  <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" *ngIf="passwordInput.invalid && passwordInput.touched">
+                La contraseña debe tener al menos 6 caracteres
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">
+                <i class="bi bi-check-circle"></i> Confirmar contraseña
+              </label>
+              <div class="input-group">
+                <input
+                  [type]="showConfirmPassword ? 'text' : 'password'"
+                  class="form-control"
+                  [(ngModel)]="userData.confirmPassword"
+                  name="confirmPassword"
+                  required
+                  placeholder="Repite tu contraseña"
+                  #confirmInput="ngModel"
+                  [class.is-invalid]="confirmInput.invalid && confirmInput.touched"
+                >
+                <button 
+                  class="btn btn-outline-secondary" 
+                  type="button"
+                  (click)="toggleConfirmPasswordVisibility()"
+                  [attr.aria-label]="showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                >
+                  <i class="bi" [class.bi-eye]="!showConfirmPassword" [class.bi-eye-slash]="showConfirmPassword"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" *ngIf="confirmInput.invalid && confirmInput.touched">
+                Confirma tu contraseña
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary w-100"
+              [disabled]="registerForm.invalid || loading"
+            >
+              <i class="bi bi-person-check"></i>
+              {{ loading ? 'Registrando...' : 'Registrarme' }}
+            </button>
+
+            <p class="text-center mt-3">
+              ¿Ya tienes cuenta? <a routerLink="/login">
+                <i class="bi bi-box-arrow-in-right"></i> Inicia sesión aquí
+              </a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

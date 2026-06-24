@@ -1,7 +1,7 @@
 {
   "games": [
     {
-      "id": 1,
+      "id": "1",
       "name": "The Legend of Zelda: Tears of the Kingdom",
       "price": 59.99,
       "discount": 10,
@@ -12,7 +12,7 @@
       "stock": 100
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "EA Sports FC 25",
       "price": 69.99,
       "discount": 0,
@@ -23,7 +23,7 @@
       "stock": 50
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Cyberpunk 2077",
       "price": 39.99,
       "discount": 25,
@@ -34,7 +34,7 @@
       "stock": 200
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Hogwarts Legacy",
       "price": 49.99,
       "discount": 20,
@@ -45,7 +45,7 @@
       "stock": 150
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Call of Duty: Modern Warfare III",
       "price": 69.99,
       "discount": 15,
@@ -56,7 +56,7 @@
       "stock": 80
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "Grand Theft Auto V",
       "price": 29.99,
       "discount": 30,
@@ -68,7 +68,7 @@
       "releaseDate": "2013-09-17"
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "Grand Theft Auto VI",
       "price": 79.99,
       "discount": 0,
@@ -81,7 +81,7 @@
       "preorder": true
     },
     {
-      "id": 8,
+      "id": "8",
       "name": "Fortnite - Battle Pass",
       "price": 9.99,
       "discount": 0,
@@ -94,7 +94,32 @@
       "battlePass": true
     }
   ],
-  "users": [],
+  "users": [
+    {
+      "name": "Diego Morante",
+      "phone": "964247753",
+      "email": "morantediego14@gmail.com",
+      "registeredAt": "2026-06-20T00:08:37.146Z",
+      "id": "eaIjQ_J4NBY"
+    },
+    {
+      "name": "Diego Morante",
+      "phone": "964247753",
+      "email": "morantediego@gmail.com",
+      "password": "diego123",
+      "registeredAt": "2026-06-20T00:37:20.618Z",
+      "id": "fvQE61rDYj0"
+    },
+    {
+      "id": "RhtEcQTbUH4",
+      "name": "Diego Morante",
+      "phone": "964247753",
+      "email": "diego123@gmail.com",
+      "password": "diego123",
+      "registeredAt": "2026-06-20T00:58:13.423Z"
+    }
+  ],
   "cart": [],
-  "favorites": []
+  "favorites": [],
+  "$schema": "./node_modules/json-server/schema.json"
 }

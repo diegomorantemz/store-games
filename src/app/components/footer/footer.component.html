@@ -3,8 +3,10 @@
     <div class="row">
       <!-- Columna 1: Información -->
       <div class="col-md-4 mb-3 mb-md-0">
-        <h5 class="text-uppercase mb-3">🎮 Store Games</h5>
-        <p class="small">
+        <h5 class="text-uppercase mb-3">
+          <i class="bi bi-controller"></i> Store Games
+        </h5>
+        <p class="small text-white-50">
           Tu tienda digital de confianza para comprar los mejores videojuegos 
           al mejor precio. Entrega inmediata y soporte 24/7.
         </p>
@@ -14,9 +16,21 @@
       <div class="col-md-3 mb-3 mb-md-0">
         <h5 class="text-uppercase mb-3">Enlaces</h5>
         <ul class="list-unstyled">
-          <li><a routerLink="/" class="text-white-50 text-decoration-none">Inicio</a></li>
-          <li><a routerLink="/favorites" class="text-white-50 text-decoration-none">Mis Favoritos</a></li>
-          <li><a routerLink="/cart" class="text-white-50 text-decoration-none">Mi Carrito</a></li>
+          <li class="mb-1">
+            <a routerLink="/" class="text-white-50 text-decoration-none">
+              <i class="bi bi-house"></i> Inicio
+            </a>
+          </li>
+          <li class="mb-1">
+            <a routerLink="/favorites" class="text-white-50 text-decoration-none">
+              <i class="bi bi-heart"></i> Favoritos
+            </a>
+          </li>
+          <li class="mb-1">
+            <a routerLink="/cart" class="text-white-50 text-decoration-none">
+              <i class="bi bi-cart3"></i> Carrito
+            </a>
+          </li>
         </ul>
       </div>
 
@@ -24,9 +38,15 @@
       <div class="col-md-3 mb-3 mb-md-0">
         <h5 class="text-uppercase mb-3">Contacto</h5>
         <ul class="list-unstyled">
-          <li class="small">📧 ventas&#64;storegames.com</li>  <!-- ← Cambiado @ por &#64; -->
-          <li class="small">📞 +51 999 123 456</li>
-          <li class="small">💬 WhatsApp: +51 999 123 456</li>
+          <li class="small mb-1">
+            <i class="bi bi-envelope"></i> ventas&#64;storegames.com
+          </li>
+          <li class="small mb-1">
+            <i class="bi bi-phone"></i> +51 999 123 456
+          </li>
+          <li class="small mb-1">
+            <i class="bi bi-whatsapp"></i> WhatsApp: +51 964 247 753
+          </li>
         </ul>
       </div>
 
@@ -34,9 +54,15 @@
       <div class="col-md-2">
         <h5 class="text-uppercase mb-3">Pago</h5>
         <ul class="list-unstyled">
-          <li class="small">💳 Yape</li>
-          <li class="small">📱 Plin</li>
-          <li class="small">💵 Efectivo</li>
+          <li class="small mb-1">
+            <i class="bi bi-credit-card"></i> Yape
+          </li>
+          <li class="small mb-1">
+            <i class="bi bi-credit-card"></i> Plin
+          </li>
+          <li class="small mb-1">
+            <i class="bi bi-cash"></i> Transferencia
+          </li>
         </ul>
       </div>
     </div>
@@ -51,7 +77,7 @@
           &copy; {{ currentYear }} Store Games - Todos los derechos reservados
         </p>
         <p class="small mb-0 text-white-50">
-          🎮 Los mejores juegos digitales al alcance de un clic
+          <i class="bi bi-controller"></i> Los mejores juegos digitales al alcance de un clic
         </p>
       </div>
     </div>

@@ -4,20 +4,22 @@
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Cargando...</span>
     </div>
-    <p class="mt-2">Cargando información del juego...</p>
+    <p class="mt-2 text-muted">Cargando información del juego...</p>
   </div>
 
   <!-- Error -->
   <div *ngIf="error" class="alert alert-danger">
-    {{ error }}
-    <a routerLink="/" class="btn btn-primary ms-3">Volver al inicio</a>
+    <i class="bi bi-exclamation-triangle-fill"></i> {{ error }}
+    <a routerLink="/" class="btn btn-primary ms-3">
+      <i class="bi bi-house"></i> Volver al inicio
+    </a>
   </div>
 
   <!-- Detalle del juego -->
   <div *ngIf="!loading && !error && game" class="row">
     <!-- Columna izquierda: Imagen -->
     <div class="col-md-5 mb-4">
-      <div class="card">
+      <div class="card shadow">
         <img 
           [src]="game.imageUrl" 
           [alt]="game.name"
@@ -25,12 +27,13 @@
           style="width: 100%; object-fit: cover;"
           (error)="game.imageUrl = 'https://via.placeholder.com/500x500?text=No+Image'"
         >
-        <div class="card-body text-center">
+        <div class="card-body">
           <button class="btn btn-primary w-100 mb-2" (click)="addToCart()">
-            🛒 Añadir al carrito
+            <i class="bi bi-cart-plus"></i> Añadir al carrito
           </button>
           <button class="btn btn-outline-danger w-100" (click)="toggleFavorite()">
-            {{ isFavorite ? '❤️ Quitar de favoritos' : '🤍 Añadir a favoritos' }}
+            <i class="bi" [class.bi-heart-fill]="isFavorite" [class.bi-heart]="!isFavorite"></i>
+            {{ isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos' }}
           </button>
         </div>
       </div>
@@ -38,7 +41,7 @@
 
     <!-- Columna derecha: Información -->
     <div class="col-md-7">
-      <div class="card">
+      <div class="card shadow">
         <div class="card-body">
           <!-- Categoría -->
           <span class="badge bg-secondary mb-3">{{ game.category }}</span>
@@ -66,25 +69,25 @@
 
           <!-- Stock -->
           <div class="alert alert-info" *ngIf="game.stock > 0; else outOfStock">
-            ✅ Disponible - {{ game.stock }} unidades
+            <i class="bi bi-check-circle-fill"></i> Disponible - {{ game.stock }} unidades
           </div>
           <ng-template #outOfStock>
             <div class="alert alert-danger">
-              ❌ Agotado - Sin stock disponible
+              <i class="bi bi-x-circle-fill"></i> Agotado - Sin stock disponible
             </div>
           </ng-template>
 
           <!-- Descripción -->
-          <h4>📖 Descripción</h4>
+          <h4><i class="bi bi-book"></i> Descripción</h4>
           <p class="lead">{{ game.description }}</p>
 
           <!-- Fecha de lanzamiento -->
           <p class="text-muted" *ngIf="game.releaseDate">
-            📅 Lanzamiento: {{ game.releaseDate | date:'dd/MM/yyyy' }}
+            <i class="bi bi-calendar3"></i> Lanzamiento: {{ game.releaseDate | date:'dd/MM/yyyy' }}
           </p>
 
           <!-- Tráiler -->
-          <h4 class="mt-4">🎬 Tráiler oficial</h4>
+          <h4 class="mt-4"><i class="bi bi-film"></i> Tráiler oficial</h4>
           <div class="ratio ratio-16x9 mt-2">
             <iframe 
               [src]="game.trailerUrl | safeUrl"
@@ -96,7 +99,7 @@
           <!-- Botón volver -->
           <div class="mt-4">
             <a routerLink="/" class="btn btn-secondary">
-              ← Volver al catálogo
+              <i class="bi bi-arrow-left"></i> Volver al catálogo
             </a>
           </div>
         </div>
