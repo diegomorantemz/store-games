@@ -12,7 +12,6 @@ export class FavoritesService {
 
   constructor(private userService: UserService) {
     this.favoritesSubject = new BehaviorSubject<Game[]>([]);
-
     this.userService.getCurrentUser().subscribe(user => {
       this.currentUserId = user ? user.id : null;
       this.loadFavorites();
@@ -24,15 +23,13 @@ export class FavoritesService {
   }
 
   private loadFavorites(): void {
-    const key = this.getStorageKey();
-    const savedFavorites = localStorage.getItem(key);
+    const savedFavorites = localStorage.getItem(this.getStorageKey());
     const favorites: Game[] = savedFavorites ? JSON.parse(savedFavorites) : [];
     this.favoritesSubject.next(favorites);
   }
 
   private saveFavorites(favorites: Game[]): void {
-    const key = this.getStorageKey();
-    localStorage.setItem(key, JSON.stringify(favorites));
+    localStorage.setItem(this.getStorageKey(), JSON.stringify(favorites));
     this.favoritesSubject.next(favorites);
   }
 
@@ -46,24 +43,19 @@ export class FavoritesService {
 
   addToFavorites(game: Game): void {
     const currentFavorites = this.favoritesSubject.value;
-    const exists = currentFavorites.some(fav => fav.id === game.id);
-    
-    if (!exists) {
-      const newFavorites = [...currentFavorites, game];
-      this.saveFavorites(newFavorites);
+    if (!currentFavorites.some(fav => fav.id === game.id)) {
+      this.saveFavorites([...currentFavorites, game]);
     }
   }
 
   removeFromFavorites(gameId: number): void {
     const currentFavorites = this.favoritesSubject.value;
-    const newFavorites = currentFavorites.filter(game => game.id !== gameId);
-    this.saveFavorites(newFavorites);
+    this.saveFavorites(currentFavorites.filter(game => game.id !== gameId));
   }
 
   toggleFavorite(game: Game): boolean {
     const currentFavorites = this.favoritesSubject.value;
     const exists = currentFavorites.some(fav => fav.id === game.id);
-    
     if (exists) {
       this.removeFromFavorites(game.id);
       return false;

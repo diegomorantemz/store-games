@@ -38,7 +38,6 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  // Método para cerrar el menú
   closeMenu(): void {
     const navbarCollapse = document.getElementById('navbarNav');
     if (navbarCollapse && navbarCollapse.classList.contains('show')) {

@@ -13,8 +13,6 @@ export class CartService {
 
   constructor(private userService: UserService) {
     this.cartSubject = new BehaviorSubject<Cart>({ items: [], total: 0 });
-
-    // Escuchar cambios de usuario
     this.userService.getCurrentUser().subscribe(user => {
       this.currentUserId = user ? user.id : null;
       this.loadCart();
@@ -26,15 +24,13 @@ export class CartService {
   }
 
   private loadCart(): void {
-    const key = this.getStorageKey();
-    const savedCart = localStorage.getItem(key);
+    const savedCart = localStorage.getItem(this.getStorageKey());
     const cart: Cart = savedCart ? JSON.parse(savedCart) : { items: [], total: 0 };
     this.cartSubject.next(cart);
   }
 
   private saveCart(cart: Cart): void {
-    const key = this.getStorageKey();
-    localStorage.setItem(key, JSON.stringify(cart));
+    localStorage.setItem(this.getStorageKey(), JSON.stringify(cart));
     this.cartSubject.next(cart);
   }
 
@@ -51,35 +47,21 @@ export class CartService {
     const existingItem = currentCart.items.find(item => item.game.id === game.id);
 
     let newItems: CartItem[];
-    
     if (existingItem) {
       newItems = currentCart.items.map(item =>
-        item.game.id === game.id
-          ? { ...item, quantity: item.quantity + quantity }
-          : item
+        item.game.id === game.id ? { ...item, quantity: item.quantity + quantity } : item
       );
     } else {
       newItems = [...currentCart.items, { game, quantity }];
     }
 
-    const newCart: Cart = {
-      items: newItems,
-      total: calculateTotal(newItems)
-    };
-
-    this.saveCart(newCart);
+    this.saveCart({ items: newItems, total: calculateTotal(newItems) });
   }
 
   removeFromCart(gameId: number): void {
     const currentCart = this.cartSubject.value;
     const newItems = currentCart.items.filter(item => item.game.id !== gameId);
-    
-    const newCart: Cart = {
-      items: newItems,
-      total: calculateTotal(newItems)
-    };
-
-    this.saveCart(newCart);
+    this.saveCart({ items: newItems, total: calculateTotal(newItems) });
   }
 
   updateQuantity(gameId: number, quantity: number): void {
@@ -87,18 +69,11 @@ export class CartService {
       this.removeFromCart(gameId);
       return;
     }
-
     const currentCart = this.cartSubject.value;
     const newItems = currentCart.items.map(item =>
       item.game.id === gameId ? { ...item, quantity } : item
     );
-
-    const newCart: Cart = {
-      items: newItems,
-      total: calculateTotal(newItems)
-    };
-
-    this.saveCart(newCart);
+    this.saveCart({ items: newItems, total: calculateTotal(newItems) });
   }
 
   clearCart(): void {

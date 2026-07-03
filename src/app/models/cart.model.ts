@@ -10,7 +10,6 @@ export interface Cart {
   total: number;
 }
 
-// Calcular total del carrito
 export function calculateTotal(items: CartItem[]): number {
   return items.reduce((sum, item) => {
     const price = item.game.discount > 0 

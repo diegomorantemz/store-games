@@ -11,7 +11,6 @@ export interface Game {
   releaseDate?: string;
 }
 
-// Función para calcular precio con descuento
 export function getDiscountedPrice(game: Game): number {
   if (game.discount > 0) {
     return game.price * (1 - game.discount / 100);
@@ -19,7 +18,6 @@ export function getDiscountedPrice(game: Game): number {
   return game.price;
 }
 
-// Función para formatear precio
 export function formatPrice(price: number): string {
   return `S/ ${price.toFixed(2)}`;
 }

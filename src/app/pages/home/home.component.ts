@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
         this.allGames = data;
         this.filteredGames = data;
         this.loading = false;
-        // Si hay búsqueda pendiente, aplicarla localmente
+
         if (this.searchTerm) {
           this.filterGamesLocally();
         }
@@ -53,7 +53,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // Búsqueda LOCAL (más rápido y confiable)
   filterGamesLocally(): void {
     if (!this.searchTerm.trim()) {
       this.filteredGames = this.allGames;
@@ -67,12 +66,10 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  // Método llamado desde el input
   onSearchInput(): void {
     this.filterGamesLocally();
   }
 
-  // Limpiar búsqueda
   clearSearch(): void {
     this.searchTerm = '';
     this.filteredGames = this.allGames;
@@ -100,7 +97,7 @@ export class HomeComponent implements OnInit {
     this.cartService.addToCart(game, 1);
     
     const originalText = button.innerText;
-    button.innerText = '✓ Añadido!';
+    button.innerText = 'Añadido!';
     button.disabled = true;
     
     setTimeout(() => {

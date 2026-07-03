@@ -62,8 +62,8 @@ export class UserService {
 
   logout(): void {
     localStorage.removeItem(this.sessionKey);
-    localStorage.removeItem('cart_session'); // Limpiar carrito de sesión
-    localStorage.removeItem('favorites_session'); // Limpiar favoritos de sesión
+    localStorage.removeItem('cart_session'); 
+    localStorage.removeItem('favorites_session');
     this.currentUserSubject.next(null);
   }
 
@@ -79,7 +79,6 @@ export class UserService {
     return this.http.get<User[]>(`${this.apiUrl}/users`);
   }
 
-  // Obtener usuario sin password
   getPublicUser(userId: number): Observable<Omit<User, 'password'>> {
     return this.http.get<User>(`${this.apiUrl}/users/${userId}`).pipe(
       map(({ password, ...publicUser }) => publicUser)

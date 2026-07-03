@@ -1,5 +1,5 @@
 <div class="container mt-4 mb-5">
-  <!-- Cargando -->
+
   <div *ngIf="loading" class="text-center py-5">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Cargando...</span>
@@ -7,7 +7,6 @@
     <p class="mt-2 text-muted">Cargando información del juego...</p>
   </div>
 
-  <!-- Error -->
   <div *ngIf="error" class="alert alert-danger">
     <i class="bi bi-exclamation-triangle-fill"></i> {{ error }}
     <a routerLink="/" class="btn btn-primary ms-3">
@@ -15,9 +14,8 @@
     </a>
   </div>
 
-  <!-- Detalle del juego -->
   <div *ngIf="!loading && !error && game" class="row">
-    <!-- Columna izquierda: Imagen -->
+
     <div class="col-md-5 mb-4">
       <div class="card shadow">
         <img 
@@ -39,17 +37,14 @@
       </div>
     </div>
 
-    <!-- Columna derecha: Información -->
     <div class="col-md-7">
       <div class="card shadow">
         <div class="card-body">
-          <!-- Categoría -->
+
           <span class="badge bg-secondary mb-3">{{ game.category }}</span>
-          
-          <!-- Título -->
+
           <h1 class="card-title mb-3">{{ game.name }}</h1>
-          
-          <!-- Precio -->
+
           <div class="mb-4">
             <ng-container *ngIf="hasDiscount(); else noDiscount">
               <span class="text-decoration-line-through text-danger fs-4 me-2">
@@ -67,7 +62,6 @@
             </ng-template>
           </div>
 
-          <!-- Stock -->
           <div class="alert alert-info" *ngIf="game.stock > 0; else outOfStock">
             <i class="bi bi-check-circle-fill"></i> Disponible - {{ game.stock }} unidades
           </div>
@@ -77,16 +71,13 @@
             </div>
           </ng-template>
 
-          <!-- Descripción -->
           <h4><i class="bi bi-book"></i> Descripción</h4>
           <p class="lead">{{ game.description }}</p>
 
-          <!-- Fecha de lanzamiento -->
           <p class="text-muted" *ngIf="game.releaseDate">
             <i class="bi bi-calendar3"></i> Lanzamiento: {{ game.releaseDate | date:'dd/MM/yyyy' }}
           </p>
 
-          <!-- Tráiler -->
           <h4 class="mt-4"><i class="bi bi-film"></i> Tráiler oficial</h4>
           <div class="ratio ratio-16x9 mt-2">
             <iframe 
@@ -96,7 +87,6 @@
             </iframe>
           </div>
 
-          <!-- Botón volver -->
           <div class="mt-4">
             <a routerLink="/" class="btn btn-secondary">
               <i class="bi bi-arrow-left"></i> Volver al catálogo

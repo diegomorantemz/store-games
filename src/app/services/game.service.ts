@@ -19,13 +19,11 @@ export class GameService {
     return this.http.get<Game>(`${this.apiUrl}/games/${id}`);
   }
 
-  // Buscar juegos por nombre (búsqueda parcial)
   searchGames(searchTerm: string): Observable<Game[]> {
-    // JSON Server soporta búsqueda con 'q' para búsqueda parcial en todos los campos
+
     return this.http.get<Game[]>(`${this.apiUrl}/games?q=${searchTerm}`);
   }
 
-  // Buscar específicamente por nombre
   searchGamesByName(searchTerm: string): Observable<Game[]> {
     return this.http.get<Game[]>(`${this.apiUrl}/games?name_like=${searchTerm}`);
   }

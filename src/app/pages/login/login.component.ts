@@ -52,7 +52,7 @@ export class LoginComponent {
         }
 
         this.userService.setSession(user);
-        alert('Bienvenido de vuelta, ' + user.name);
+        alert('Bienvenido de nuevo, ' + user.name);
         this.router.navigate(['/']);
       },
       error: () => {

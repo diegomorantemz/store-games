@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { isValidEmail, isValidPassword } from '../../models/user.model';
+import { isValidEmail, isValidPassword, isValidPhone } from '../../models/user.model';
 
 @Component({
   selector: 'app-register',
@@ -39,7 +39,7 @@ export class RegisterComponent {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
 
-  onSubmit(): void {
+  onSubmit(form: NgForm): void {
     this.error = '';
     this.success = '';
 
@@ -50,6 +50,11 @@ export class RegisterComponent {
 
     if (!this.userData.phone.trim()) {
       this.error = 'Ingresa tu número de teléfono';
+      return;
+    }
+
+    if (!isValidPhone(this.userData.phone)) {
+      this.error = 'El teléfono debe tener 9 dígitos y solo números (ej: 999123456)';
       return;
     }
 
@@ -83,7 +88,9 @@ export class RegisterComponent {
           next: () => {
             this.success = 'Registro exitoso! Ahora puedes iniciar sesión.';
             this.loading = false;
-            // Limpiar formulario
+
+            form.resetForm();
+
             this.userData = {
               name: '',
               phone: '',
@@ -93,7 +100,7 @@ export class RegisterComponent {
             };
             this.showPassword = false;
             this.showConfirmPassword = false;
-            // Redirigir al login después de 2 segundos
+            
             setTimeout(() => {
               this.router.navigate(['/login']);
             }, 2000);

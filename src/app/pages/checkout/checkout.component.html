@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <div class="row">
-    <!-- Resumen del pedido -->
+
     <div class="col-lg-8">
       <div class="card shadow">
         <div class="card-header bg-primary text-white">
@@ -9,7 +9,7 @@
           </h4>
         </div>
         <div class="card-body">
-          <!-- Productos -->
+
           <div *ngIf="cart.items.length > 0">
             <div class="table-responsive">
               <table class="table table-hover">
@@ -61,7 +61,6 @@
       </div>
     </div>
 
-    <!-- Datos del usuario y pago -->
     <div class="col-lg-4">
       <div class="card shadow">
         <div class="card-header bg-success text-white">
@@ -118,7 +117,6 @@
             +{{ phoneNumber }}
           </div>
 
-          <!-- Botón enviar pedido -->
           <button class="btn btn-success w-100 btn-lg" 
                   (click)="sendWhatsApp()"
                   [disabled]="cart.items.length === 0 || loading">
@@ -127,12 +125,10 @@
             <span *ngIf="loading"> Procesando...</span>
           </button>
 
-          <!-- Botón carrito -->
           <button class="btn btn-secondary w-100 mt-2" (click)="goBack()">
             <i class="bi bi-arrow-left"></i> Volver al carrito
           </button>
 
-          <!-- Mensaje de confirmación -->
           <div *ngIf="orderSent" class="alert alert-success mt-3">
             <i class="bi bi-check-circle"></i> Pedido enviado a WhatsApp<br>
             <small>¿Ya pagaste? Se te preguntará para vaciar tu carrito.</small>
@@ -144,7 +140,6 @@
         </div>
       </div>
 
-      <!-- Resumen rápido -->
       <div class="card shadow mt-3">
         <div class="card-body">
           <h6 class="mb-0">

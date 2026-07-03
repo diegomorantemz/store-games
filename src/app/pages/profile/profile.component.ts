@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { User, isValidEmail, isValidPassword } from '../../models/user.model';
+import { User, isValidEmail, isValidPassword, isValidPhone } from '../../models/user.model';
 
 @Component({
   selector: 'app-profile',
@@ -91,6 +91,11 @@ export class ProfileComponent implements OnInit {
       this.error = 'Ingresa tu número de teléfono';
       return;
     }
+    
+    if (!isValidPhone(this.userData.phone)) {
+      this.error = 'El teléfono debe tener 9 dígitos y solo números (ej: 999123456)';
+      return;
+    }
 
     if (!isValidEmail(this.userData.email)) {
       this.error = 'Ingresa un correo electrónico válido';
@@ -108,12 +113,11 @@ export class ProfileComponent implements OnInit {
       }
     }
 
-    // Verificar si el correo ya existe en otro usuario
     this.loading = true;
 
     this.userService.checkEmailExists(this.userData.email).subscribe({
       next: (existingUsers) => {
-        // Filtrar para excluir al usuario actual
+
         const otherUserWithEmail = existingUsers.find(
           u => u.id !== this.user?.id
         );
@@ -124,7 +128,6 @@ export class ProfileComponent implements OnInit {
           return;
         }
 
-        // Continuar con la actualización
         this.updateUser();
       },
       error: () => {

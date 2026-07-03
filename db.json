@@ -74,7 +74,7 @@
       "discount": 0,
       "imageUrl": "https://i.ytimg.com/vi/QdBZY2fkU-0/maxresdefault.jpg",
       "category": "Acción",
-      "description": "🎮 RESERVA YA - El juego más esperado del año. Aparta tu copia ahora y recibe contenido exclusivo. Lanzamiento programado para 2025.",
+      "description": "RESERVA YA - El juego más esperado del año. Aparta tu copia ahora y recibe contenido exclusivo. Lanzamiento programado para 2025.",
       "trailerUrl": "https://www.youtube.com/embed/QdBZY2fkU-0",
       "stock": 0,
       "releaseDate": "Próximamente Noviembre 2026",
@@ -87,7 +87,7 @@
       "discount": 0,
       "imageUrl": "https://cdn2.unrealengine.com/fortnite-star-wars-battle-pass-mx-1920x1080-b1c2fea85a13.jpg",
       "category": "Battle Royale",
-      "description": "🎫 PASE DE BATALLA - Desbloquea más de 100 recompensas exclusivas, incluyendo skins, bailes, gestos y moneda V-Bucks. ¡La mejor manera de disfrutar Fortnite!",
+      "description": "PASE DE BATALLA - Desbloquea más de 100 recompensas exclusivas, incluyendo skins, bailes, gestos y moneda V-Bucks. ¡La mejor manera de disfrutar Fortnite!",
       "trailerUrl": "https://www.youtube.com/embed/2gUtfBmw86Y",
       "stock": 999999,
       "releaseDate": "Actualización constante",
@@ -98,13 +98,6 @@
     {
       "name": "Diego Morante",
       "phone": "964247753",
-      "email": "morantediego14@gmail.com",
-      "registeredAt": "2026-06-20T00:08:37.146Z",
-      "id": "eaIjQ_J4NBY"
-    },
-    {
-      "name": "Diego Morante",
-      "phone": "964247753",
       "email": "morantediego@gmail.com",
       "password": "diego123",
       "registeredAt": "2026-06-20T00:37:20.618Z",
@@ -112,11 +105,35 @@
     },
     {
       "id": "RhtEcQTbUH4",
-      "name": "Diego Morante",
+      "name": "Anderson Cordova",
       "phone": "964247753",
-      "email": "diego123@gmail.com",
-      "password": "diego123",
+      "email": "cordovaanderson@gmail.com",
+      "password": "anderson123",
       "registeredAt": "2026-06-20T00:58:13.423Z"
+    },
+    {
+      "id": "oCutuOWPQ_Q",
+      "name": "Adrian Ruiz",
+      "phone": "958756410",
+      "email": "ruizadrian@gmail.com",
+      "password": "adrian123",
+      "registeredAt": "2026-07-03T16:08:21.212Z"
+    },
+    {
+      "name": "jose perez",
+      "phone": "984367850",
+      "email": "jose@gmail.com",
+      "password": "jose123",
+      "registeredAt": "2026-07-03T16:21:37.291Z",
+      "id": "rkaajL_BgNg"
+    },
+    {
+      "name": "pedro perez",
+      "phone": "987542587",
+      "email": "pedrop@hotmail.com",
+      "password": "pedro123",
+      "registeredAt": "2026-07-03T16:27:58.138Z",
+      "id": "Mt06CvtfMiM"
     }
   ],
   "cart": [],

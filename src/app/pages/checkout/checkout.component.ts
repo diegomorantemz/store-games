@@ -77,7 +77,6 @@ export class CheckoutComponent implements OnInit {
     this.loading = true;
     this.orderSent = false;
 
-    // Construir mensaje
     let message = 'NUEVO PEDIDO - Store Games\n\n';
     message += 'Cliente: ' + this.user.name + '\n';
     message += 'Email: ' + this.user.email + '\n';
@@ -103,17 +102,14 @@ export class CheckoutComponent implements OnInit {
     message += '3. Recibirás tus juegos en minutos\n\n';
     message += 'Gracias por tu compra!';
 
-    // Codificar mensaje para URL
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${this.phoneNumber}?text=${encodedMessage}`;
 
-    // Abrir WhatsApp en nueva ventana
     window.open(whatsappUrl, '_blank');
 
     this.loading = false;
     this.orderSent = true;
 
-    // Preguntar si ya realizó el pago después de 6 segundos
     setTimeout(() => {
       this.clearCartAfterPayment();
     }, 6000);
