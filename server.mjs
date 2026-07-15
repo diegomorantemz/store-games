@@ -39,6 +39,13 @@ db.exec(`
     owner_id TEXT PRIMARY KEY,
     data TEXT NOT NULL
   );
+
+  CREATE TABLE IF NOT EXISTS orders (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    data TEXT NOT NULL
+  );
 `);
 
 seedFromJson();
@@ -73,6 +80,11 @@ const server = createServer(async (req, res) => {
 
     if (pathParts[0] === 'favorites') {
       await handleJsonStore(req, res, pathParts, 'favorites', []);
+      return;
+    }
+
+    if (pathParts[0] === 'orders') {
+      await handleOrders(req, res, pathParts, url);
       return;
     }
 
@@ -234,6 +246,37 @@ async function handleJsonStore(req, res, pathParts, table, emptyValue) {
   sendJson(res, 405, { error: 'Método no permitido' });
 }
 
+async function handleOrders(req, res, pathParts, url) {
+  if (req.method === 'GET') {
+    const userId = url.searchParams.get('userId');
+    if (!userId) {
+      sendJson(res, 400, { error: 'Falta userId' });
+      return;
+    }
+
+    const rows = db.prepare('SELECT data FROM orders WHERE user_id = ? ORDER BY created_at DESC').all(userId);
+    sendJson(res, 200, rows.map((row) => JSON.parse(row.data)));
+    return;
+  }
+
+  if (req.method === 'POST') {
+    const order = await readJson(req);
+    const createdAt = new Date().toISOString();
+    const newOrder = {
+      ...order,
+      id: createOrderId(),
+      createdAt
+    };
+
+    db.prepare('INSERT INTO orders (id, user_id, created_at, data) VALUES (?, ?, ?, ?)')
+      .run(newOrder.id, newOrder.userId, createdAt, JSON.stringify(newOrder));
+    sendJson(res, 201, newOrder);
+    return;
+  }
+
+  sendJson(res, 405, { error: 'Método no permitido' });
+}
+
 function readJson(req) {
   return new Promise((resolve, reject) => {
     let body = '';
@@ -264,4 +307,8 @@ function setCors(res) {
 
 function normalize(value) {
   return String(value || '').trim().toLowerCase();
+}
+
+function createOrderId() {
+  return Math.random().toString(36).slice(2, 8).toUpperCase();
 }

@@ -94,34 +94,64 @@
             <label class="fw-bold">
               <i class="bi bi-credit-card"></i> Método de pago
             </label>
-            <div class="mt-2">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" 
-                       [(ngModel)]="paymentMethod" value="yape" id="yape">
-                <label class="form-check-label" for="yape">
-                  <i class="bi bi-phone"></i> Yape
-                </label>
+            <div class="payment-options mt-2">
+              <input type="radio" [(ngModel)]="paymentMethod" value="yape" id="yape" name="paymentMethod">
+              <label for="yape">
+                <i class="bi bi-phone"></i>
+                Yape
+              </label>
+
+              <input type="radio" [(ngModel)]="paymentMethod" value="plin" id="plin" name="paymentMethod">
+              <label for="plin">
+                <i class="bi bi-qr-code"></i>
+                Plin
+              </label>
+
+              <input type="radio" [(ngModel)]="paymentMethod" value="card" id="card" name="paymentMethod">
+              <label for="card">
+                <i class="bi bi-credit-card-2-front"></i>
+                Tarjeta
+              </label>
+            </div>
+          </div>
+
+          <div *ngIf="paymentMethod === 'yape' || paymentMethod === 'plin'" class="qr-panel">
+            <div class="qr-box">
+              <img [src]="getQrUrl()" [alt]="'QR de ' + getPaymentLabel()">
+            </div>
+            <div class="qr-details">
+              <strong>Escanea con {{ getPaymentLabel() }}</strong>
+              <span>Total: {{ formatPrice(cart.total) }}</span>
+              <small>Cuenta: +{{ phoneNumber }}</small>
+            </div>
+          </div>
+
+          <div *ngIf="paymentMethod === 'card'" class="card-payment">
+            <div class="mb-2">
+              <label class="form-label small text-muted">Titular</label>
+              <input class="form-control" type="text" [(ngModel)]="cardData.holder" name="cardHolder" placeholder="Nombre en la tarjeta">
+            </div>
+            <div class="mb-2">
+              <label class="form-label small text-muted">Número de tarjeta</label>
+              <input class="form-control" type="text" [(ngModel)]="cardData.number" name="cardNumber" placeholder="0000 0000 0000 0000">
+            </div>
+            <div class="row g-2">
+              <div class="col-6">
+                <label class="form-label small text-muted">Vence</label>
+                <input class="form-control" type="text" [(ngModel)]="cardData.expiry" name="cardExpiry" placeholder="MM/AA">
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" 
-                       [(ngModel)]="paymentMethod" value="plin" id="plin">
-                <label class="form-check-label" for="plin">
-                  <i class="bi bi-phone"></i> Plin
-                </label>
+              <div class="col-6">
+                <label class="form-label small text-muted">CVV</label>
+                <input class="form-control" type="password" [(ngModel)]="cardData.cvv" name="cardCvv" placeholder="123">
               </div>
             </div>
           </div>
 
-          <div class="alert alert-info small">
-            <strong><i class="bi bi-info-circle"></i> Número para pago:</strong><br>
-            +{{ phoneNumber }}
-          </div>
-
-          <button class="btn btn-success w-100 btn-lg" 
-                  (click)="sendWhatsApp()"
+          <button class="btn btn-success w-100 btn-lg mt-3"
+                  (click)="confirmPayment()"
                   [disabled]="cart.items.length === 0 || loading">
-            <i class="bi bi-whatsapp"></i>
-            <span *ngIf="!loading"> Enviar pedido por WhatsApp</span>
+            <i class="bi bi-check2-circle"></i>
+            <span *ngIf="!loading"> Confirmar pago</span>
             <span *ngIf="loading"> Procesando...</span>
           </button>
 
@@ -129,13 +159,8 @@
             <i class="bi bi-arrow-left"></i> Volver al carrito
           </button>
 
-          <div *ngIf="orderSent" class="alert alert-success mt-3">
-            <i class="bi bi-check-circle"></i> Pedido enviado a WhatsApp<br>
-            <small>¿Ya pagaste? Se te preguntará para vaciar tu carrito.</small>
-          </div>
-
-          <p class="text-muted small text-center mt-3">
-            Al hacer clic serás redirigido a WhatsApp para completar el pago.
+          <p class="text-muted small text-center mt-3 mb-0">
+            Tu pedido se guardará al confirmar el pago.
           </p>
         </div>
       </div>

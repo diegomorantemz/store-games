@@ -18,8 +18,11 @@ export class ProfileComponent implements OnInit {
   userData = {
     name: '',
     phone: '',
-    email: '',
-    password: '',
+    email: ''
+  };
+  passwordData = {
+    currentPassword: '',
+    newPassword: '',
     confirmPassword: ''
   };
   loading = false;
@@ -27,6 +30,7 @@ export class ProfileComponent implements OnInit {
   success = '';
   showPassword = false;
   showConfirmPassword = false;
+  showCurrentPassword = false;
 
   constructor(
     private userService: UserService,
@@ -45,12 +49,14 @@ export class ProfileComponent implements OnInit {
         this.userData = {
           name: user.name,
           phone: user.phone,
-          email: user.email,
-          password: '',
-          confirmPassword: ''
+          email: user.email
         };
       }
     });
+  }
+
+  toggleCurrentPasswordVisibility(): void {
+    this.showCurrentPassword = !this.showCurrentPassword;
   }
 
   togglePasswordVisibility(): void {
@@ -67,13 +73,12 @@ export class ProfileComponent implements OnInit {
     this.success = '';
     this.showPassword = false;
     this.showConfirmPassword = false;
+    this.showCurrentPassword = false;
     if (this.user) {
       this.userData = {
         name: this.user.name,
         phone: this.user.phone,
-        email: this.user.email,
-        password: '',
-        confirmPassword: ''
+        email: this.user.email
       };
     }
   }
@@ -100,17 +105,6 @@ export class ProfileComponent implements OnInit {
     if (!isValidEmail(this.userData.email)) {
       this.error = 'Ingresa un correo electrónico válido';
       return;
-    }
-
-    if (this.userData.password) {
-      if (!isValidPassword(this.userData.password)) {
-        this.error = 'La contraseña debe tener al menos 6 caracteres';
-        return;
-      }
-      if (this.userData.password !== this.userData.confirmPassword) {
-        this.error = 'Las contraseñas no coinciden';
-        return;
-      }
     }
 
     this.loading = true;
@@ -143,7 +137,7 @@ export class ProfileComponent implements OnInit {
       name: this.userData.name,
       phone: this.userData.phone,
       email: this.userData.email,
-      password: this.userData.password || this.user!.password,
+      password: this.user!.password,
       registeredAt: this.user!.registeredAt
     };
 
@@ -156,9 +150,63 @@ export class ProfileComponent implements OnInit {
         this.editMode = false;
         this.showPassword = false;
         this.showConfirmPassword = false;
+        this.showCurrentPassword = false;
       },
       error: () => {
         this.error = 'Error al actualizar los datos';
+        this.loading = false;
+      }
+    });
+  }
+
+  resetPassword(): void {
+    this.error = '';
+    this.success = '';
+
+    if (!this.user) {
+      this.error = 'No se encontró tu sesión';
+      return;
+    }
+
+    if (this.passwordData.currentPassword !== this.user.password) {
+      this.error = 'La contraseña actual no es correcta';
+      return;
+    }
+
+    if (!isValidPassword(this.passwordData.newPassword)) {
+      this.error = 'La nueva contraseña debe tener al menos 6 caracteres';
+      return;
+    }
+
+    if (this.passwordData.newPassword !== this.passwordData.confirmPassword) {
+      this.error = 'Las contraseñas no coinciden';
+      return;
+    }
+
+    this.loading = true;
+
+    const updatedUser: User = {
+      ...this.user,
+      password: this.passwordData.newPassword
+    };
+
+    this.userService.updateUser(updatedUser).subscribe({
+      next: (user) => {
+        this.success = 'Contraseña restablecida correctamente';
+        this.loading = false;
+        this.user = user;
+        this.userService.setSession(user);
+        this.passwordData = {
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        };
+        this.showCurrentPassword = false;
+        this.showPassword = false;
+        this.showConfirmPassword = false;
+      },
+      error: () => {
+        this.error = 'Error al restablecer la contraseña';
         this.loading = false;
       }
     });
