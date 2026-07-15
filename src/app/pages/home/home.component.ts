@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error:', err);
-        this.error = 'Error al cargar juegos. ¿JSON Server está corriendo?';
+        this.error = 'Error al cargar juegos. ¿El servidor SQLite está corriendo?';
         this.loading = false;
       }
     });

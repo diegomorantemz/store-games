@@ -26,44 +26,116 @@
               <i class="bi bi-person-circle"></i> Hola, <strong class="text-white">{{ user.name }}</strong>
             </span>
           </li>
-          <li class="nav-item">
-            <a routerLink="/profile" class="btn btn-outline-light btn-sm" (click)="closeMenu()">
-              <i class="bi bi-person-gear"></i> Perfil
+        </ng-container>
+
+        <li class="nav-item dropdown account-menu">
+          <button
+            class="btn btn-outline-light btn-sm account-toggle"
+            type="button"
+            [attr.aria-expanded]="isAccountMenuOpen"
+            aria-label="Abrir menú de configuración"
+            (click)="toggleAccountMenu($event)"
+          >
+            <i class="bi bi-person-circle account-icon"></i>
+            <span *ngIf="itemCount > 0" class="badge bg-danger rounded-pill account-count">{{ itemCount }}</span>
+          </button>
+
+          <div
+            class="dropdown-menu dropdown-menu-end account-dropdown shadow"
+            [class.show]="isAccountMenuOpen"
+            (click)="$event.stopPropagation()"
+          >
+            <div class="dropdown-header account-header" *ngIf="user">
+              <span class="account-avatar account-avatar-lg">
+                {{ user.name.charAt(0).toUpperCase() }}
+              </span>
+              <span>
+                <strong>{{ user.name }}</strong>
+                <small>{{ user.email }}</small>
+              </span>
+            </div>
+
+            <div class="dropdown-header account-header" *ngIf="!user">
+              <span class="account-avatar account-avatar-lg">S</span>
+              <span>
+                <strong>StoreGames</strong>
+                <small>Gestiona tu cuenta y compras</small>
+              </span>
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+            <a
+              *ngIf="user"
+              routerLink="/profile"
+              routerLinkActive="active"
+              class="dropdown-item"
+              (click)="closeMenu()"
+            >
+              <i class="bi bi-person-gear"></i>
+              <span>Perfil</span>
             </a>
-          </li>
-          <li class="nav-item">
-            <button class="btn btn-outline-danger btn-sm" (click)="logout(); closeMenu();">
-              <i class="bi bi-box-arrow-right"></i> Salir
+
+            <a
+              routerLink="/favorites"
+              routerLinkActive="active"
+              class="dropdown-item"
+              (click)="closeMenu()"
+            >
+              <i class="bi bi-heart"></i>
+              <span>Favoritos</span>
+            </a>
+
+            <a
+              routerLink="/cart"
+              routerLinkActive="active"
+              class="dropdown-item"
+              (click)="closeMenu()"
+            >
+              <i class="bi bi-cart3"></i>
+              <span>Carrito</span>
+              <span *ngIf="itemCount > 0" class="badge bg-danger rounded-pill ms-auto">{{ itemCount }}</span>
+            </a>
+
+            <a
+              routerLink="/checkout"
+              routerLinkActive="active"
+              class="dropdown-item"
+              (click)="closeMenu()"
+            >
+              <i class="bi bi-credit-card"></i>
+              <span>Pago</span>
+            </a>
+
+            <a
+              *ngIf="user"
+              routerLink="/orders"
+              routerLinkActive="active"
+              class="dropdown-item"
+              (click)="closeMenu()"
+            >
+              <i class="bi bi-receipt"></i>
+              <span>Mis Pedidos</span>
+            </a>
+
+            <div class="dropdown-divider"></div>
+
+            <ng-container *ngIf="!user">
+              <a routerLink="/login" routerLinkActive="active" class="dropdown-item" (click)="closeMenu()">
+                <i class="bi bi-key"></i>
+                <span>Login</span>
+              </a>
+              <a routerLink="/register" routerLinkActive="active" class="dropdown-item" (click)="closeMenu()">
+                <i class="bi bi-person-plus"></i>
+                <span>Registro</span>
+              </a>
+            </ng-container>
+
+            <button *ngIf="user" class="dropdown-item text-danger" type="button" (click)="logout(); closeMenu();">
+              <i class="bi bi-box-arrow-right"></i>
+              <span>Cerrar sesión</span>
             </button>
-          </li>
-        </ng-container>
-
-        <ng-container *ngIf="!user">
-          <li class="nav-item">
-            <a routerLink="/login" class="btn btn-outline-light btn-sm" (click)="closeMenu()">
-              <i class="bi bi-key"></i> Login
-            </a>
-          </li>
-          <li class="nav-item">
-            <a routerLink="/register" class="btn btn-outline-light btn-sm" (click)="closeMenu()">
-              <i class="bi bi-person-plus"></i> Registro
-            </a>
-          </li>
-        </ng-container>
-
-        <li class="nav-item">
-          <a routerLink="/favorites" class="btn btn-outline-light btn-sm" (click)="closeMenu()">
-            <i class="bi bi-heart"></i> Favoritos
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a routerLink="/cart" class="btn btn-outline-light btn-sm position-relative" (click)="closeMenu()">
-            <i class="bi bi-cart3"></i> Carrito
-            <span *ngIf="itemCount > 0" class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
-              {{ itemCount }}
-            </span>
-          </a>
+          </div>
         </li>
 
       </ul>

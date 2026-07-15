@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
@@ -15,6 +15,7 @@ import { User } from '../../models/user.model';
 export class NavbarComponent implements OnInit {
   itemCount = 0;
   user: User | null = null;
+  isAccountMenuOpen = false;
 
   constructor(
     private cartService: CartService,
@@ -35,13 +36,38 @@ export class NavbarComponent implements OnInit {
     if (confirm('¿Cerrar sesión?')) {
       this.userService.logout();
       this.user = null;
+      this.closeAccountMenu();
     }
   }
 
+  toggleAccountMenu(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isAccountMenuOpen = !this.isAccountMenuOpen;
+  }
+
+  closeAccountMenu(): void {
+    this.isAccountMenuOpen = false;
+  }
+
   closeMenu(): void {
+    this.closeAccountMenu();
+
     const navbarCollapse = document.getElementById('navbarNav');
     if (navbarCollapse && navbarCollapse.classList.contains('show')) {
       navbarCollapse.classList.remove('show');
     }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.account-menu')) {
+      this.closeAccountMenu();
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.closeAccountMenu();
   }
 }

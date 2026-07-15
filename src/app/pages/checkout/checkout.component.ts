@@ -4,6 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 import { UserService } from '../../services/user.service';
+import { OrderService } from '../../services/order.service';
 import { Cart, CartItem } from '../../models/cart.model';
 import { User } from '../../models/user.model';
 import { formatPrice, getDiscountedPrice } from '../../models/game.model';
@@ -21,11 +22,17 @@ export class CheckoutComponent implements OnInit {
   loading = false;
   paymentMethod = 'yape';
   phoneNumber = '51964247753';
-  orderSent = false;
+  cardData = {
+    holder: '',
+    number: '',
+    expiry: '',
+    cvv: ''
+  };
 
   constructor(
     private cartService: CartService,
     private userService: UserService,
+    private orderService: OrderService,
     private router: Router
   ) {}
 
@@ -68,73 +75,71 @@ export class CheckoutComponent implements OnInit {
     return getDiscountedPrice(game);
   }
 
-  sendWhatsApp(): void {
+  confirmPayment(): void {
     if (!this.user) {
       alert('Debes iniciar sesión');
       return;
     }
 
-    this.loading = true;
-    this.orderSent = false;
+    if (this.paymentMethod === 'card' && !this.isCardValid()) {
+      alert('Completa los datos de la tarjeta');
+      return;
+    }
 
-    let message = 'NUEVO PEDIDO - Store Games\n\n';
-    message += 'Cliente: ' + this.user.name + '\n';
-    message += 'Email: ' + this.user.email + '\n';
-    message += 'Teléfono: ' + this.user.phone + '\n\n';
-    message += 'DETALLE DEL PEDIDO:\n';
-    message += '------------------------\n\n';
-
-    this.cart.items.forEach((item, index) => {
-      const price = this.getItemPrice(item);
-      message += `${index + 1}. ${item.game.name}\n`;
-      message += `   Cantidad: ${item.quantity}\n`;
-      message += `   Precio: ${this.formatPrice(price)}\n`;
-      message += `   Subtotal: ${this.formatPrice(price * item.quantity)}\n\n`;
-    });
-
-    message += '------------------------\n';
-    message += 'TOTAL: ' + this.formatPrice(this.cart.total) + '\n\n';
-    message += 'Método de pago: ' + (this.paymentMethod === 'yape' ? 'Yape' : 'Plin') + '\n';
-    message += 'Número para pago: +' + this.phoneNumber + '\n\n';
-    message += 'Instrucciones:\n';
-    message += '1. Realiza el pago al número indicado\n';
-    message += '2. Envía el comprobante de pago\n';
-    message += '3. Recibirás tus juegos en minutos\n\n';
-    message += 'Gracias por tu compra!';
-
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${this.phoneNumber}?text=${encodedMessage}`;
-
-    window.open(whatsappUrl, '_blank');
-
-    this.loading = false;
-    this.orderSent = true;
-
-    setTimeout(() => {
-      this.clearCartAfterPayment();
-    }, 6000);
+    this.saveOrder();
   }
 
-  clearCartAfterPayment(): void {
-    if (this.orderSent) {
-      const confirmClear = confirm(
-        '¿Ya realizaste el pago?\n\n' +
-        'Si ya pagaste, haz clic en Aceptar para vaciar tu carrito.\n' +
-        'Si aún no pagas, puedes cancelar y tu carrito se mantendrá.'
-      );
+  isCardValid(): boolean {
+    const cardNumber = this.cardData.number.replace(/\s/g, '');
+    return this.cardData.holder.trim().length > 2 &&
+      /^[0-9]{13,19}$/.test(cardNumber) &&
+      /^(0[1-9]|1[0-2])\/[0-9]{2}$/.test(this.cardData.expiry) &&
+      /^[0-9]{3,4}$/.test(this.cardData.cvv);
+  }
 
-      if (confirmClear) {
+  getPaymentLabel(): string {
+    if (this.paymentMethod === 'yape') {
+      return 'Yape';
+    }
+
+    if (this.paymentMethod === 'plin') {
+      return 'Plin';
+    }
+
+    return 'Tarjeta';
+  }
+
+  getQrUrl(): string {
+    const qrText = `${this.getPaymentLabel()} StoreGames ${this.formatPrice(this.cart.total)} ${this.phoneNumber}`;
+    return `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(qrText)}`;
+  }
+
+  saveOrder(): void {
+    if (!this.user || this.cart.items.length === 0) {
+      return;
+    }
+
+    this.loading = true;
+
+    this.orderService.createOrder({
+      userId: this.user.id,
+      items: this.cart.items,
+      paymentMethod: this.getPaymentLabel(),
+      total: this.cart.total
+    }).subscribe({
+      next: () => {
         this.cartService.clearCart();
+        this.loading = false;
         alert('Gracias por tu compra!\n\n' +
               'Recibirás tus juegos en tu correo electrónico.\n' +
               'Email: ' + this.user?.email);
-        this.router.navigate(['/']);
-      } else {
-        alert('Tu carrito se mantiene guardado.\n' +
-              'Cuando completes el pago, vuelve a confirmar.');
-        this.router.navigate(['/cart']);
+        this.router.navigate(['/orders']);
+      },
+      error: () => {
+        this.loading = false;
+        alert('No se pudo guardar tu pedido. Inténtalo nuevamente.');
       }
-    }
+    });
   }
 
   goBack(): void {
