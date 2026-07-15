@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CartItem, Cart, calculateTotal } from '../models/cart.model';
 import { Game } from '../models/game.model';
@@ -8,10 +9,14 @@ import { UserService } from './user.service';
   providedIn: 'root'
 })
 export class CartService {
+  private apiUrl = 'http://localhost:3000';
   private cartSubject: BehaviorSubject<Cart>;
-  private currentUserId: number | null = null;
+  private currentUserId: string | null = null;
 
-  constructor(private userService: UserService) {
+  constructor(
+    private userService: UserService,
+    private http: HttpClient
+  ) {
     this.cartSubject = new BehaviorSubject<Cart>({ items: [], total: 0 });
     this.userService.getCurrentUser().subscribe(user => {
       this.currentUserId = user ? user.id : null;
@@ -19,19 +24,22 @@ export class CartService {
     });
   }
 
-  private getStorageKey(): string {
-    return this.currentUserId ? `cart_user_${this.currentUserId}` : 'cart_guest';
+  private getOwnerId(): string {
+    return this.currentUserId ? `user_${this.currentUserId}` : 'guest';
   }
 
   private loadCart(): void {
-    const savedCart = localStorage.getItem(this.getStorageKey());
-    const cart: Cart = savedCart ? JSON.parse(savedCart) : { items: [], total: 0 };
-    this.cartSubject.next(cart);
+    this.http.get<Cart>(`${this.apiUrl}/cart/${this.getOwnerId()}`).subscribe({
+      next: (cart) => this.cartSubject.next(cart),
+      error: () => this.cartSubject.next({ items: [], total: 0 })
+    });
   }
 
   private saveCart(cart: Cart): void {
-    localStorage.setItem(this.getStorageKey(), JSON.stringify(cart));
     this.cartSubject.next(cart);
+    this.http.put<Cart>(`${this.apiUrl}/cart/${this.getOwnerId()}`, cart).subscribe({
+      error: () => this.loadCart()
+    });
   }
 
   getCart(): Observable<Cart> {

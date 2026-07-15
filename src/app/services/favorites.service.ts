@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Game } from '../models/game.model';
 import { UserService } from './user.service';
@@ -7,10 +8,14 @@ import { UserService } from './user.service';
   providedIn: 'root'
 })
 export class FavoritesService {
+  private apiUrl = 'http://localhost:3000';
   private favoritesSubject: BehaviorSubject<Game[]>;
-  private currentUserId: number | null = null;
+  private currentUserId: string | null = null;
 
-  constructor(private userService: UserService) {
+  constructor(
+    private userService: UserService,
+    private http: HttpClient
+  ) {
     this.favoritesSubject = new BehaviorSubject<Game[]>([]);
     this.userService.getCurrentUser().subscribe(user => {
       this.currentUserId = user ? user.id : null;
@@ -18,19 +23,22 @@ export class FavoritesService {
     });
   }
 
-  private getStorageKey(): string {
-    return this.currentUserId ? `favorites_user_${this.currentUserId}` : 'favorites_guest';
+  private getOwnerId(): string {
+    return this.currentUserId ? `user_${this.currentUserId}` : 'guest';
   }
 
   private loadFavorites(): void {
-    const savedFavorites = localStorage.getItem(this.getStorageKey());
-    const favorites: Game[] = savedFavorites ? JSON.parse(savedFavorites) : [];
-    this.favoritesSubject.next(favorites);
+    this.http.get<Game[]>(`${this.apiUrl}/favorites/${this.getOwnerId()}`).subscribe({
+      next: (favorites) => this.favoritesSubject.next(favorites),
+      error: () => this.favoritesSubject.next([])
+    });
   }
 
   private saveFavorites(favorites: Game[]): void {
-    localStorage.setItem(this.getStorageKey(), JSON.stringify(favorites));
     this.favoritesSubject.next(favorites);
+    this.http.put<Game[]>(`${this.apiUrl}/favorites/${this.getOwnerId()}`, favorites).subscribe({
+      error: () => this.loadFavorites()
+    });
   }
 
   getFavorites(): Observable<Game[]> {
